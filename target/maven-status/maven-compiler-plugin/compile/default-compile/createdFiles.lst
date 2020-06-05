@@ -1,0 +1,7 @@
+com\myrestapp\db\DatabaseConnection.class
+com\myrestapp\obj\FilterPerson.class
+com\myrestapp\obj\Person.class
+com\myrestapp\service\ServicePeople.class
+com\myrestapp\db\Finder.class
+com\myrestapp\PeopleApplication.class
+Servlet.class
