@@ -1,6 +1,7 @@
 package com.myrestapp.service;
 import java.util.*;
 import java.sql.*;
+import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.net.*;
 import javax.ws.rs.*;
@@ -50,15 +51,15 @@ public class ServicePeople {
 		dbc.start();
 		try 
 		{
-			Statement stmt = dbc.getConnection().createStatement();
-			ResultSet rs = stmt.executeQuery(query.selectAll(key));
+			PreparedStatement stmt = dbc.getConnection().prepareStatement(query.selectAll());
+			stmt.setString(1, key);
+			ResultSet rs = stmt.executeQuery();
 			rs.next();
 			person.setKey((rs.getString("uniqueKey")));
 			person.setName((rs.getString("name")));
 			person.setSurname((rs.getString("surname")));
 			person.setDate((rs.getString("birth")));
 			stmt.close();
-			dbc.closeConnection();
 		}
 		catch (NullPointerException ex)
         {
@@ -67,6 +68,10 @@ public class ServicePeople {
 		catch (SQLException e)
 		{
 			e.printStackTrace();
+		}
+		finally
+		{
+			dbc.closeConnection();
 		}
 		return person;
 	}
@@ -96,10 +101,13 @@ public class ServicePeople {
 		dbc.start();
 		try 
 		{
-			Statement stmt = dbc.getConnection().createStatement();
-			stmt.executeUpdate(query.insert(person));
+			PreparedStatement stmt = dbc.getConnection().prepareStatement(query.insert());
+			stmt.setString(1, person.getKey());
+			stmt.setString(2, person.getName());
+			stmt.setString(3, person.getSurname());
+			stmt.setString(4, person.getDate());
+			stmt.execute();
 			stmt.close();
-			dbc.closeConnection();
 		}
 		catch (NullPointerException ex)
         {
@@ -109,6 +117,10 @@ public class ServicePeople {
 		{
 			e.printStackTrace();
 			return Response.serverError().build();
+		}
+		finally
+		{
+			dbc.closeConnection();
 		}
 		return Response.created(new URI("/person/" + person.getKey())).build();
 	}
@@ -139,10 +151,14 @@ public class ServicePeople {
 		dbc.start();
 		try 
 		{
-			Statement stmt = dbc.getConnection().createStatement();
-			stmt.executeUpdate(query.update(key, person));
+			PreparedStatement stmt = dbc.getConnection().prepareStatement(query.update());
+			stmt.setString(1, person.getKey());
+			stmt.setString(2, person.getName());
+			stmt.setString(3, person.getSurname());
+			stmt.setString(4, person.getDate());
+			stmt.setString(5, key);
+			stmt.execute();
 			stmt.close();
-			dbc.closeConnection();
 		}
 		catch (NullPointerException ex)
         {
@@ -152,6 +168,10 @@ public class ServicePeople {
 		{
 			e.printStackTrace();
 			return Response.serverError().build();
+		}
+		finally
+		{
+			dbc.closeConnection();
 		}
 		return Response.ok().build();
 	}
@@ -166,10 +186,10 @@ public class ServicePeople {
 		dbc.start();
 		try 
 		{
-			Statement stmt = dbc.getConnection().createStatement();
-			stmt.executeUpdate(query.delete(key));
+			PreparedStatement stmt = dbc.getConnection().prepareStatement(query.delete());
+			stmt.setString(1, key);
+			stmt.execute();
 			stmt.close();
-			dbc.closeConnection();
 		}
 		
 		catch (NullPointerException ex)
@@ -180,6 +200,10 @@ public class ServicePeople {
 		{
 			e.printStackTrace();
 			return Response.serverError().build();
+		}
+		finally
+		{
+			dbc.closeConnection();
 		}
 		return Response.ok().build();
 	}

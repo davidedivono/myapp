@@ -123,7 +123,7 @@ $("#update").click(function() {
 	};
 	$.ajax(settings).done(function(response) {
 		alert("La persona selezionata è stata modificata!");
-		location.reload();
+		//location.reload();
 	});
 });
 
@@ -182,6 +182,7 @@ function updatePerson(key) {
 	$('#add').hide();
 	$('#save').hide();
 	$('#key').val(key);
+	$('#key').attr("disabled", true);
 }
 
 

@@ -41,7 +41,6 @@ public class Finder {
 				list.add(p);
 			}
 			stmt.close();
-			dbc.closeConnection();
 		}
 		catch (NullPointerException ex)
         {
@@ -50,7 +49,11 @@ public class Finder {
 		catch (SQLException e)
 		{
 			e.printStackTrace();
-		}	
+		}
+		finally
+		{
+			dbc.closeConnection();
+		}
 		return list;
 	}
 

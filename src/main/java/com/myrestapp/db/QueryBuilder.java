@@ -9,29 +9,29 @@ public class QueryBuilder {
 		
 	}
 	
-	public String selectAll(String key)
+	public String selectAll()
 	{
-		String query = "SELECT * FROM person WHERE uniqueKey = '" + key + "'";
+		String query = "SELECT * FROM person WHERE uniqueKey = ?";
 		return query;
 	}
 	
-	public String insert(Person person)
+	public String insert()
 	{
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-		String query = "INSERT INTO person (uniqueKey, name, surname, birth, tinsert) VALUES ('" + person.getKey() + "', '" + person.getName() + "', '"+ person.getSurname() + "', '" + person.getDate() + "', '" + timestamp + "')";
+		String query = "INSERT INTO person (uniqueKey, name, surname, birth, tinsert) VALUES (?, ?, ?, ?, '" + timestamp + "')";
 		return query;
 	}
 	
-	public String update(String key, Person person)
+	public String update()
 	{
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-		String query = "UPDATE person SET uniqueKey = '" + person.getKey() + "', name = '" + person.getName() + "', surname = '" + person.getSurname() + "', birth = '" + person.getDate() + "', tinsert = '" + timestamp + "' WHERE uniqueKey = '" + key + "'";
+		String query = "UPDATE person SET uniqueKey = ?, name = ?, surname = ?, birth = ?, tinsert = '" + timestamp + "' WHERE uniqueKey = ?";
 		return query;
 	}
 	
-	public String delete(String key)
+	public String delete()
 	{
-		String query = "DELETE FROM person WHERE uniqueKey = '" + key + "'";
+		String query = "DELETE FROM person WHERE uniqueKey = ?";
 		return query;
 	}
 	
